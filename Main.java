@@ -247,10 +247,51 @@ public class Main extends JFrame {
 		wordkor.setColumns(10);
 
 		JButton addword = new JButton("추가");
-		addword.setBackground(SystemColor.control);
-		addword.setFont(new Font("맑은 고딕", Font.PLAIN, 21));
-		addword.setBounds(250, 19, 91, 37);
-		wordpanel.add(addword);
+     		addword.setBackground(SystemColor.control);
+      		addword.setFont(new Font("맑은 고딕", Font.PLAIN, 21));
+      		addword.setBounds(250, 19, 91, 37);
+      		addword.addActionListener(new ActionListener() {
+         		public void actionPerformed(ActionEvent e) {
+            			eng = wordeng.getText();
+            			kor = wordkor.getText();
+         
+            			try {
+            				int cnt = 0;
+               				conn = dbconnect.dbconn();
+               				String sql = "select * from "+tablename+" where 영단어 = '" + eng + "'"; //중복을 검사하기위함
+               				Statement st = conn.createStatement();
+               				ResultSet rs = st.executeQuery(sql);
+               				while(rs.next()) {
+            	   				cnt++; // 입력한 영단어 값인 데이터베이스 값을 가져와서 다음행으로 갈때마다 cnt증가
+               				}
+               
+               				if(cnt == 0) // 위에서 cnt가 증가하지 않았다면 ( 중복된 값이 없다면 )
+               				{
+               					sql = "insert into " + tablename + "(영단어, 해석, vocaid) values ( ?, ?, ?)";
+               					pstmt = conn.prepareStatement(sql);
+               					pstmt.setString(1, eng);
+               					pstmt.setString(2, kor);
+               					pstmt.setString(3, voca_id);
+               					int r = pstmt.executeUpdate();
+
+               					sql = "select 영단어, 해석 from " + tablename;
+               					st = conn.createStatement();
+               					rs = st.executeQuery(sql);
+               					table.setModel(DbUtils.resultSetToTableModel(rs));
+
+               					wordeng.setText("");
+               					wordkor.setText("");
+               				}
+		       			else // 중복된다면
+               				{
+            	   				JOptionPane.showMessageDialog(null, "중복된 단어입니다 !", "중복된 단어", JOptionPane.ERROR_MESSAGE);
+               				}
+            			} catch (Exception ex1) {
+               				System.out.println(ex1.getMessage());
+            			}
+         		}
+      		});
+      		wordpanel.add(addword);
 
 		JButton delword = new JButton("삭제");
 		delword.setBackground(SystemColor.control);
