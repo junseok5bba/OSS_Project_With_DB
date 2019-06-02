@@ -339,6 +339,17 @@ public class Main extends JFrame {
 		
 		JButton popupbutton = new JButton("미니 모드");
 		popupbutton.setBackground(SystemColor.control);
+		popupbutton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getActionCommand().equals("미니 모드")) {
+					minsize minsz = new minsize(tablename);
+					minsz.setVisible(true);
+				}
+			}
+		});
+
 		popupbutton.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
 		popupbutton.setBounds(12, 18, 161, 86);
 		optionpanel.add(popupbutton);
