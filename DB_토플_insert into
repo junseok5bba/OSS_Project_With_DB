@@ -48,6 +48,3 @@ insert into 토플  values (47, 'mangle', '난도질하다', 3);
 insert into 토플  values (48, 'manifestation', '표현', 3);
 insert into 토플  values (49, 'mingle', '교제하다', 3);
 insert into 토플  values (50, 'misconception', '오해', 3);
-
-
-
