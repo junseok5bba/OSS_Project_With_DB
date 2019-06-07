@@ -29,7 +29,6 @@ public class Main extends JFrame {
    private JPanel testpane;
    private JTable table;
    
-   
    static String id = null;
    static Main frame = new Main(id);
 
@@ -47,13 +46,12 @@ public class Main extends JFrame {
          }
       });
    }
-
    /**
     * Create the frame.
     */
    Connection conn = null;
    PreparedStatement pstmt = null;
-   String tablename;
+   String tablename ="";
    String word_id;
    String kor;
    String eng;
@@ -67,39 +65,14 @@ public class Main extends JFrame {
    private JTextField wordkor;
    private JTextField testResultText;
    private JTextField testFailCountText;
+   private JTextField TotalCount;
    
 
    public Main(String id) {
-      
-      setBounds(100, 100, 450, 300);
          testpane = new JPanel();
          testpane.setBorder(new EmptyBorder(5, 5, 5, 5));
          setContentPane(testpane);
-         
-         testResultText = new JTextField();
-         testResultText.setBackground(Color.WHITE);
-         testResultText.setHorizontalAlignment(SwingConstants.RIGHT);
-         testResultText.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-         testResultText.setEditable(false);
-         testResultText.setColumns(10);
-         testResultText.setBounds(143, 68, 163, 36);
-         
-         testResultText.setText("");
-         
-         
-         
-         testFailCountText = new JTextField();
-         testFailCountText.setForeground(Color.BLACK);
-         testFailCountText.setBackground(Color.WHITE);
-         testFailCountText.setHorizontalAlignment(SwingConstants.RIGHT);
-         testFailCountText.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-         testFailCountText.setEditable(false);
-         testFailCountText.setColumns(10);
-         testFailCountText.setBounds(143, 111, 163, 36);
-         
-         testFailCountText.setText("");
 
-         
          ButtonGroup btng = new ButtonGroup();
 
          JLabel wordl = new JLabel("ddd");
@@ -173,8 +146,6 @@ public class Main extends JFrame {
       setContentPane(contentPane);
       contentPane.setLayout(null);
       
-
-
       JScrollPane scrollPane = new JScrollPane();
       scrollPane.setBounds(31, 46, 355, 604);
       contentPane.add(scrollPane);
@@ -195,23 +166,24 @@ public class Main extends JFrame {
             try {
                conn = dbconnect.dbconn();
                Statement st = conn.createStatement();
-               
-               sql = "insert into voca (vocaname, vocaowner) values ( ?, ?)";
+               tablename = id + "새_단어장";
+               sql = "insert into voca (vocaname, vocaowner) values (?, ?)";
                pstmt = conn.prepareStatement(sql);
-               pstmt.setString(1, id);
+               pstmt.setString(1, tablename);
                pstmt.setString(2, id);
                int r = pstmt.executeUpdate();
                
                StringBuilder sb = new StringBuilder();
-               String sql = sb.append("create table "+id+"(").append("wordid int(10) auto_increment, ")
+               String sql = sb.append("create table "+ tablename +"(").append("wordid int(10) auto_increment, ")
                      .append("영단어 VARCHAR(50), ").append("해석 VARCHAR(50), ").append("vocaid int(10), ")
                      .append("primary key(wordid), ")
-                     .append("constraint "+id+"_fk_vocaid foreign key(vocaid) references voca(vocaid)")
+                     .append("constraint " + tablename + "_fk_vocaid foreign key(vocaid) references voca(vocaid)")
                      .append(");").toString();
                st.execute(sql);
-               tablename = id;
-               sql = "select 영단어, 해석 from " + tablename;
+               sql = "select 영단어, 해석 from " +tablename;
                ResultSet rs = st.executeQuery(sql);
+               while(rs.next())
+                   voca_id = rs.getString(1);
                table.setModel(DbUtils.resultSetToTableModel(rs));
             } catch (Exception ex) {
                System.out.println(ex.getMessage());
@@ -224,21 +196,23 @@ public class Main extends JFrame {
       view_myword.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       view_myword.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-            String sql = "select 영단어, 해석 from "+ id;
-            try {
-               conn = dbconnect.dbconn();
-               Statement st = conn.createStatement();
-               ResultSet rs = st.executeQuery(sql);
-               table.setModel(DbUtils.resultSetToTableModel(rs));
-               
-               sql = "select * from voca where vocaname = '"+id+"'";
-               st = conn.createStatement();
-               rs = st.executeQuery(sql);
-               while(rs.next())
-                  voca_id = rs.getString(1);
-               
-               tablename = id;
-              
+           tablename = id + "새_단어장";
+            String sql = "select 영단어, 해석 from "+ tablename;
+             try {
+                conn = dbconnect.dbconn();
+                Statement st = conn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                table.setModel(DbUtils.resultSetToTableModel(rs));
+                
+                sql = "select * from voca where vocaname = '"+tablename+"'";
+                st = conn.createStatement();
+                rs = st.executeQuery(sql);
+                while(rs.next())
+                   voca_id = rs.getString(1);
+                
+                TotalCount.setText(table.getRowCount()+"개");
+                testResultText.setText("");
+                testFailCountText.setText("");
             } catch (Exception f) {
                System.out.println(f.getMessage());
             }
@@ -257,17 +231,26 @@ public class Main extends JFrame {
             try {
                conn = dbconnect.dbconn();
                Statement st = conn.createStatement();
+               tablename = id + "오답노트";
+               sql = "insert into voca (vocaname, vocaowner) values (?, ?)";
+               pstmt = conn.prepareStatement(sql);
+               pstmt.setString(1, tablename);
+               pstmt.setString(2, id);
+               int r = pstmt.executeUpdate();
+               
                StringBuilder sb = new StringBuilder();
-               String sql = sb.append("create table 오답노트(").append("wordid int(10) auto_increment, ")
+               String sql = sb.append("create table " + tablename + "(").append("wordid int(10) auto_increment, ")
                      .append("영단어 VARCHAR(50), ").append("해석 VARCHAR(50), ").append("vocaid int(10), ")
                      .append("primary key(wordid), ")
-                     .append("constraint 오답노트_fk_vocaid foreign key(vocaid) references voca(vocaid)")
+                     .append("constraint "+ tablename + "_fk_vocaid foreign key(vocaid) references voca(vocaid)")
                      .append(");").toString();
                st.execute(sql);
-               tablename = "오답노트";
                sql = "select 영단어, 해석 from " + tablename;
                ResultSet rs = st.executeQuery(sql);
+               while(rs.next())
+                   voca_id = rs.getString(1);
                table.setModel(DbUtils.resultSetToTableModel(rs));
+               
             } catch (Exception e) {
                System.out.println(e.getMessage());
             }
@@ -279,14 +262,23 @@ public class Main extends JFrame {
       view_odap.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       view_odap.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-            String sql = "select 영단어, 해석 from 오답노트";
+            tablename = id +"오답노트";
+            String sql = "select 영단어, 해석 from "+ tablename;
             try {
                conn = dbconnect.dbconn();
                Statement st = conn.createStatement();
                ResultSet rs = st.executeQuery(sql);
                table.setModel(DbUtils.resultSetToTableModel(rs));
-               tablename = "오답노트";
-               voca_id = "5";
+               
+               sql = "select * from voca where vocaname = '"+tablename+"'";
+               st = conn.createStatement();
+               rs = st.executeQuery(sql);
+               while(rs.next())
+                  voca_id = rs.getString(1);
+               
+               TotalCount.setText(table.getRowCount()+"개");
+               testResultText.setText("");
+               testFailCountText.setText("");
             } catch (Exception d) {
                System.out.println(d.getMessage());
             }
@@ -306,6 +298,9 @@ public class Main extends JFrame {
                table.setModel(DbUtils.resultSetToTableModel(rs));
                tablename = "수능";
                voca_id = "1";
+               TotalCount.setText(table.getRowCount()+"개");
+               testResultText.setText("");
+               testFailCountText.setText("");
             } catch (Exception a) {
                System.out.println(a.getMessage());
             }
@@ -325,6 +320,9 @@ public class Main extends JFrame {
                table.setModel(DbUtils.resultSetToTableModel(rs));
                tablename = "토익";
                voca_id = "2";
+               TotalCount.setText(table.getRowCount()+"개");
+               testResultText.setText("");
+               testFailCountText.setText("");
             } catch (Exception c) {
                System.out.println(c.getMessage());
             }
@@ -344,6 +342,9 @@ public class Main extends JFrame {
                table.setModel(DbUtils.resultSetToTableModel(rs));
                tablename = "토플";
                voca_id = "3";
+               TotalCount.setText(table.getRowCount()+"개");
+               testResultText.setText("");
+               testFailCountText.setText("");
             } catch (Exception b) {
                System.out.println(b.getMessage());
             }
@@ -375,7 +376,6 @@ public class Main extends JFrame {
          public void actionPerformed(ActionEvent e) {
             eng = wordeng.getText();
             kor = wordkor.getText();
-         
             try {
                int cnt = 0;
                conn = dbconnect.dbconn();
@@ -402,6 +402,8 @@ public class Main extends JFrame {
 
                wordeng.setText("");
                wordkor.setText("");
+               
+               TotalCount.setText(table.getRowCount()+"개");
                }
                else // 중복된다면
                {
@@ -430,6 +432,7 @@ public class Main extends JFrame {
                sql = "select 영단어, 해석 from " + tablename;
                ResultSet rs = st.executeQuery(sql);
                table.setModel(DbUtils.resultSetToTableModel(rs));
+               TotalCount.setText(table.getRowCount()+"개");
             } catch (SQLException del) {
                // TODO Auto-generated catch block
                del.printStackTrace();
@@ -439,6 +442,7 @@ public class Main extends JFrame {
       delword.setFont(new Font("맑은 고딕", Font.PLAIN, 21));
       delword.setBounds(250, 75, 91, 37);
       wordpanel.add(delword);
+
 
       JLabel wordeng_label = new JLabel("영단어");
       wordeng_label.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
@@ -455,8 +459,6 @@ public class Main extends JFrame {
       optionpanel.setBounds(398, 528, 354, 122);
       contentPane.add(optionpanel);
       optionpanel.setLayout(null);
-
-      
       
       JButton popupbutton = new JButton("미니 모드");
       popupbutton.setBackground(SystemColor.control);
@@ -470,7 +472,6 @@ public class Main extends JFrame {
                }
          }
       });
-      
       
       popupbutton.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       popupbutton.setBounds(12, 18, 161, 86);
@@ -487,6 +488,12 @@ public class Main extends JFrame {
       quitbutton.setBounds(190, 18, 152, 86);
       optionpanel.add(quitbutton);
       
+      JPanel panel = new JPanel();
+      panel.setBackground(Color.WHITE);
+      panel.setBounds(399, 213, 353, 277);
+      contentPane.add(panel);
+      panel.setLayout(null);
+      
       JButton btnNewButton = new JButton("테스트");
       btnNewButton.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
@@ -498,6 +505,7 @@ public class Main extends JFrame {
             
             conn = dbconnect.dbconn();
             try {
+            	
                ArrayList<String> englist = new ArrayList<>();
                ArrayList<String> korlist = new ArrayList<>();
                
@@ -509,14 +517,12 @@ public class Main extends JFrame {
                englist.add(rs.getString(1));
                 korlist.add(rs.getString(2));               
             }
-            //단어장 숨기기
-            
+          
             if(englist.size() >= 20)
                size = 20;
             else
                size = englist.size();
-            
-                        
+
             ArrayList<String> pick = new ArrayList<>();
             
             for(int i = 0; i < size; i++) {
@@ -524,7 +530,6 @@ public class Main extends JFrame {
                point = 5;
                
                wordl.setText(englist.get(i));
-               
                selectindex = rand.nextInt(4);
                 rad = new int[4];
                 
@@ -554,7 +559,7 @@ public class Main extends JFrame {
                //JOptionPane.showInputDialog((i + 1) + "번째 단어 : '" + englist.get(i) + "'\n현재까지 총 틀린 횟수 : " + failCount, testpanel);
                JOptionPane.showOptionDialog(null, testpane, "테스트", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
                if(point <5) {
-                  if (englist.get(i).equals(korlist.get(rad[point])))
+                  if (i==rad[point])
                      pick.add( "정답인   "+ korlist.get(rad[point]));
                   else 
                      pick.add("오답인   " + korlist.get(rad[point]));
@@ -562,8 +567,10 @@ public class Main extends JFrame {
                      failCount++;
                }
                else
+               {
                   pick.add("선택하지 않으셨습니다");
-               
+                  failCount++;
+               }
                nullrad.setSelected(true);
 
             }
@@ -590,16 +597,58 @@ public class Main extends JFrame {
             textArea.setWrapStyleWord(true); 
             scrollPane.setPreferredSize(new Dimension(500, 500));
             JOptionPane.showMessageDialog(null, scrollPane, "테스트 결과", JOptionPane.INFORMATION_MESSAGE);
-               
-               
-            
             }catch (Exception test) {
                test.getMessage();
             }
-            
          }
       });
-      btnNewButton.setBounds(417, 328, 151, 81);
-      contentPane.add(btnNewButton);
+      btnNewButton.setBounds(217, 191, 117, 68);
+      panel.add(btnNewButton);
+      btnNewButton.setBackground(SystemColor.control);
+      btnNewButton.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+      
+      JLabel TotalCountLabel = new JLabel("총 단어수");
+      TotalCountLabel.setBounds(29, 30, 102, 25);
+      TotalCountLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+      panel.add(TotalCountLabel);
+      
+      TotalCount = new JTextField();
+      TotalCount.setBounds(143, 27, 163, 36);
+      panel.add(TotalCount);
+      TotalCount.setColumns(10);
+      TotalCount.setBackground(Color.WHITE);
+      TotalCount.setHorizontalAlignment(SwingConstants.RIGHT);
+      TotalCount.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+      TotalCount.setEditable(false);
+      
+      JLabel testResultLabel = new JLabel("최근 점수");
+      testResultLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+      
+      testResultLabel.setBounds(29, 84, 119, 33);
+      panel.add(testResultLabel);
+      
+      testResultText = new JTextField();
+      testResultText.setBackground(Color.WHITE);
+      testResultText.setHorizontalAlignment(SwingConstants.RIGHT);
+      testResultText.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+      testResultText.setEditable(false);
+      testResultText.setColumns(10);
+      testResultText.setBounds(143, 83, 163, 36);
+      panel.add(testResultText);
+      
+      JLabel testFailCountLabel = new JLabel("최근 틀린 개수");
+      testFailCountLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+      testFailCountLabel.setBounds(29, 138, 119, 33);
+      panel.add(testFailCountLabel);
+      
+      testFailCountText = new JTextField();
+      testFailCountText.setForeground(Color.BLACK);
+      testFailCountText.setBackground(Color.WHITE);
+      testFailCountText.setHorizontalAlignment(SwingConstants.RIGHT);
+      testFailCountText.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+      testFailCountText.setEditable(false);
+      testFailCountText.setColumns(10);
+      testFailCountText.setBounds(143, 137, 163, 36);
+      panel.add(testFailCountText);
    }
 }
