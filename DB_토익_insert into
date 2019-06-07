@@ -11,7 +11,7 @@ insert into 토익  values (10, 'castle', '성', 2);
 insert into 토익  values (11, 'reinforce', '강화시키다', 2);
 insert into 토익  values (12, 'reilgious', '종교적인', 2);
 insert into 토익  values (13, 'religion', '종교', 2);
-insert into 토익  values (14, 'region, 지역', 2);
+insert into 토익  values (14, 'region', '지역', 2);
 insert into 토익  values (15, 'regional', '지역적인', 2);
 insert into 토익  values (16, 'train', '기차', 2);
 insert into 토익  values (17, 'training', '훈련', 2);
