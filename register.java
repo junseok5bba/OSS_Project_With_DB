@@ -38,6 +38,14 @@ public class register extends JFrame {
             try {
                register frame = new register();
                frame.setVisible(true);
+               frame.addWindowListener(new WindowAdapter() // 새 창 x 누를시 꺼지게해주기위하여
+						{
+					public void windowClosing(WindowEvent e)
+					{
+						frame.setVisible(false);
+						frame.dispose();
+					}
+						});
             } catch (Exception e) {
                e.printStackTrace();
             }
