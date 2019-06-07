@@ -53,13 +53,20 @@ public class minsize extends JFrame {
                String tablename = null;
                minsize frame = new minsize(tablename);
                frame.setVisible(true);
+               frame.addWindowListener(new WindowAdapter() // 새 창 x 누를시 꺼지게해주기위하여
+						{
+					public void windowClosing(WindowEvent e)
+					{
+						frame.setVisible(false);
+						frame.dispose();
+					}
+						});
             } catch (Exception e) {
                e.printStackTrace();
             }
          }
       });
    }
-
    /**
     * Create the frame.
     */
@@ -85,8 +92,6 @@ public class minsize extends JFrame {
 
                   SimpleAttributeSet ecenter = new SimpleAttributeSet();
                   StyleConstants.setAlignment(ecenter, StyleConstants.ALIGN_CENTER);
-
-                  
                   
             JLabel korl = new JLabel();
             korl.setHorizontalAlignment(SwingConstants.CENTER);
@@ -96,7 +101,6 @@ public class minsize extends JFrame {
 
             SimpleAttributeSet center = new SimpleAttributeSet();
             StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-
 
       ArrayList<String> eng = new ArrayList<>();
       ArrayList<String> kor = new ArrayList<>();
@@ -132,7 +136,6 @@ public class minsize extends JFrame {
                      if (x >= eng.size())
                         x = 0;
                   }
-
                };
                timer.schedule(timerTask, 500, 3000);
             } catch (Exception d) {
@@ -141,5 +144,4 @@ public class minsize extends JFrame {
          }
       });
    }
-
 }
