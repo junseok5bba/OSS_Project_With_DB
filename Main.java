@@ -534,7 +534,7 @@ public class Main extends JFrame {
                 rad = new int[4];
                 
                 for(int x = 0; x < 4; x++) {
-                   rad[x] = rand.nextInt(4);
+                   rad[x] = rand.nextInt(englist.size());
                    for (int y = 0; y < x; y++) {
                       if(rad[y] == rad[x]) {
                          x--;
@@ -588,7 +588,7 @@ public class Main extends JFrame {
             {
                resultMessage += (i + 1) + "번째 시도 : 단어 '" + englist.get(i) + "'에 대하여 '" + pick.get(i) + "' 라고 답했습니다.\n";
             }
-            resultMessage += "테스트 점수 : " + form.format(100 * (((double)englist.size() - (double)failCount) / (double)englist.size())) + " 점";
+            resultMessage += "테스트 점수 : " + form.format(100 * ((size - (double)failCount) / (double)englist.size())) + " 점";
             resultMessage += "\n틀린 개수 : " + failCount + " 개";
             // 결과 메시지를 스크롤 팬에 담겨진 JOptionPane의 형태로 사용자에게 보여줍니다.
             JTextArea textArea = new JTextArea(resultMessage);
