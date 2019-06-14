@@ -70,7 +70,7 @@ public class Main extends JFrame {
    
 
    public Main(String id) {
-	   testpane = new JPanel();
+      testpane = new JPanel();
        testpane.setBorder(new EmptyBorder(5, 5, 5, 5));
        setContentPane(testpane);
 
@@ -367,9 +367,9 @@ public class Main extends JFrame {
       JMenuItem menu_quit = new JMenuItem("종료");
       menu_quit.setBackground(SystemColor.text);
       menu_quit.addActionListener(new ActionListener() {
-      	public void actionPerformed(ActionEvent e) {
-      		System.exit(0);
-      	}
+         public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+         }
       });
       menu_quit.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       menuBar.add(menu_quit);
@@ -506,11 +506,11 @@ public class Main extends JFrame {
       btnNewButton.setBounds(12, 18, 161, 86);
       optionpanel.add(btnNewButton);
       btnNewButton.addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e) {
-        	 ArrayList<String> testWords = new ArrayList<String>();
+          public void actionPerformed(ActionEvent e) {
+             ArrayList<String> testWords = new ArrayList<String>();
              int failCount = 0;
              int n = 0;
-                         
+             int testword[];
              Random rand = new Random();
              
              conn = dbconnect.dbconn();
@@ -534,12 +534,21 @@ public class Main extends JFrame {
                 size = englist.size();
 
              ArrayList<String> pick = new ArrayList<>();
+             testword = new int[size];
+             
+             for(int x = 0; x < size; x++) {
+                 testword[x] = rand.nextInt(englist.size());
+                 for (int y = 0; y < x; y++) {
+                    if(testword[y] == testword[x]) {
+                       x--;
+                    }
+                 }
+              }
              
              for(int i = 0; i < size; i++) {
                 int cnt = 0;
                 point = 5;
-                
-                wordl.setText(englist.get(i));
+            
                 selectindex = rand.nextInt(4);
                  rad = new int[4];
                  
@@ -548,19 +557,20 @@ public class Main extends JFrame {
                     for (int y = 0; y < x; y++) {
                        if(rad[y] == rad[x]) {
                           x--;
-                          break;
                        }
                     }
                  }
                  
                  for(n = 0; n<4; n++)
-                    if(rad[n] == i)
+                    if(rad[n] == testword[i])
                        cnt++;
                  
                  if(cnt == 0)
-                    rad[selectindex] = i;
+                    rad[selectindex] = testword[i];
                  
                  n = 0;
+                 wordl.setText(englist.get(testword[i]));
+                 testWords.add(englist.get(testword[i]));
                  rad1.setText(korlist.get(rad[n++]));
                  rad2.setText(korlist.get(rad[n++]));
                  rad3.setText(korlist.get(rad[n++]));
@@ -569,11 +579,11 @@ public class Main extends JFrame {
                 //JOptionPane.showInputDialog((i + 1) + "번째 단어 : '" + englist.get(i) + "'\n현재까지 총 틀린 횟수 : " + failCount, testpanel);
                 JOptionPane.showOptionDialog(null, testpane, "테스트", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
                 if(point <5) {
-                   if (i==rad[point])
+                   if (testword[i]==rad[point])
                       pick.add( "정답인   "+ korlist.get(rad[point]));
                    else 
                       pick.add("오답인   " + korlist.get(rad[point]));
-                   if(i != rad[point])
+                   if(testword[i] != rad[point])
                       failCount++;
                 }
                 else
@@ -592,12 +602,11 @@ public class Main extends JFrame {
              }
              // 결과 메시지를 준비합니다.
 
-             
              String resultMessage = "";
              // 모든 결과 내용을 결과 메시지에 담습니다.
              for(int i = 0; i < pick.size(); i++)
              {
-                resultMessage += (i + 1) + "번째 시도 : 단어 '" + englist.get(i) + "'에 대하여 '" + pick.get(i) + "' 라고 답했습니다.\n";
+                resultMessage += (i + 1) + "번째 시도 : 단어 '" + testWords.get(i) + "'에 대하여 '" + pick.get(i) + "' 라고 답했습니다.\n";
              }
              resultMessage += "테스트 점수 : " + form.format(100 * ((size - (double)failCount) / (double)englist.size())) + " 점";
              resultMessage += "\n틀린 개수 : " + failCount + " 개";
