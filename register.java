@@ -163,9 +163,7 @@ public class register extends JFrame {
                   int r = pstmt.executeUpdate();
                   JOptionPane.showMessageDialog(null, "회원가입이 완료 되셨습니다 !", "회원가입 완료", JOptionPane.INFORMATION_MESSAGE);
                   Thread.sleep(750);
-                  login login = new login();
-                  login.setVisible(true);
-                  contentPane2.setVisible(false);
+                  dispose();
                }
             }catch(Exception ex2) {
                System.out.println(ex2.getMessage());
