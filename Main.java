@@ -22,6 +22,7 @@ import java.awt.Frame;
 import java.awt.SystemColor;
 import java.awt.Color;
 import java.awt.Dimension;
+import javax.swing.border.LineBorder;
 
 public class Main extends JFrame {
 
@@ -69,85 +70,87 @@ public class Main extends JFrame {
    
 
    public Main(String id) {
-         testpane = new JPanel();
-         testpane.setBorder(new EmptyBorder(5, 5, 5, 5));
-         setContentPane(testpane);
+	   testpane = new JPanel();
+       testpane.setBorder(new EmptyBorder(5, 5, 5, 5));
+       setContentPane(testpane);
 
-         ButtonGroup btng = new ButtonGroup();
+       ButtonGroup btng = new ButtonGroup();
 
-         JLabel wordl = new JLabel("ddd");
-         wordl.setFont(new Font("굴림", Font.BOLD, 25));
-         wordl.setHorizontalAlignment(SwingConstants.CENTER);
-         wordl.setBounds(35, 30, 360, 53);
-         testpane.add(wordl);
+       JLabel wordl = new JLabel("ddd");
+       wordl.setFont(new Font("굴림", Font.BOLD, 25));
+       wordl.setHorizontalAlignment(SwingConstants.CENTER);
+       wordl.setBounds(35, 30, 360, 53);
+       testpane.add(wordl);
 
-         JRadioButton nullrad = new JRadioButton("New radio button");
-         btng.add(nullrad);
-         
-         JRadioButton rad1 = new JRadioButton("New radio button");
-         rad1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-               point = 0;
-               System.out.println(point);
-            }
-         });
-         rad1.setHorizontalAlignment(SwingConstants.CENTER);
-         rad1.setFont(new Font("굴림", Font.PLAIN, 16));
-         rad1.setBounds(35, 95, 360, 23);
-         btng.add(rad1);
-         
+       JRadioButton nullrad = new JRadioButton("New radio button");
+       btng.add(nullrad);
+       
+       JRadioButton rad1 = new JRadioButton("New radio button");
+       rad1.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+             point = 0;
+             System.out.println(point);
+          }
+       });
+       rad1.setHorizontalAlignment(SwingConstants.CENTER);
+       rad1.setFont(new Font("굴림", Font.PLAIN, 16));
+       rad1.setBounds(35, 95, 360, 23);
+       btng.add(rad1);
+       
 
-         JRadioButton rad2 = new JRadioButton("New radio button");
-         rad2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-               point = 1;
-               System.out.println(point);
-            }
-         });
-         rad2.setHorizontalAlignment(SwingConstants.CENTER);
-         rad2.setFont(new Font("굴림", Font.PLAIN, 16));
-         rad2.setBounds(35, 125, 360, 23);
-         btng.add(rad2);
-         
-         JRadioButton rad3 = new JRadioButton("New radio button");
-         rad3.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-               point = 2;
-               System.out.println(point);
-            }
-         });
-         rad3.setHorizontalAlignment(SwingConstants.CENTER);
-         rad3.setFont(new Font("굴림", Font.PLAIN, 16));
-         rad3.setBounds(35, 155, 360, 23);
-         btng.add(rad3);
+       JRadioButton rad2 = new JRadioButton("New radio button");
+       rad2.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+             point = 1;
+             System.out.println(point);
+          }
+       });
+       rad2.setHorizontalAlignment(SwingConstants.CENTER);
+       rad2.setFont(new Font("굴림", Font.PLAIN, 16));
+       rad2.setBounds(35, 125, 360, 23);
+       btng.add(rad2);
+       
+       JRadioButton rad3 = new JRadioButton("New radio button");
+       rad3.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+             point = 2;
+             System.out.println(point);
+          }
+       });
+       rad3.setHorizontalAlignment(SwingConstants.CENTER);
+       rad3.setFont(new Font("굴림", Font.PLAIN, 16));
+       rad3.setBounds(35, 155, 360, 23);
+       btng.add(rad3);
 
-         JRadioButton rad4 = new JRadioButton("New radio button");
-         rad4.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-               point = 3;
-               System.out.println(point);
-            }
-         });
-         rad4.setHorizontalAlignment(SwingConstants.CENTER);
-         rad4.setFont(new Font("굴림", Font.PLAIN, 16));
-         rad4.setBounds(35, 185, 360, 23);
-         btng.add(rad4);
-         
-         testpane.add(rad1);
-         testpane.add(rad2);
-         testpane.add(rad3);
-         testpane.add(rad4);
-      
+       JRadioButton rad4 = new JRadioButton("New radio button");
+       rad4.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+             point = 3;
+             System.out.println(point);
+          }
+       });
+       rad4.setHorizontalAlignment(SwingConstants.CENTER);
+       rad4.setFont(new Font("굴림", Font.PLAIN, 16));
+       rad4.setBounds(35, 185, 360, 23);
+       btng.add(rad4);
+       
+       testpane.add(rad1);
+       testpane.add(rad2);
+       testpane.add(rad3);
+       testpane.add(rad4);
+
       setResizable(false);
       table = new JTable();
+      table.setFillsViewportHeight(true);
       setBounds(100, 100, 780, 747);
       contentPane = new JPanel();
+      contentPane.setBackground(new Color(255, 252, 253));
       contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
       setContentPane(contentPane);
       contentPane.setLayout(null);
       
       JScrollPane scrollPane = new JScrollPane();
-      scrollPane.setBounds(31, 46, 355, 604);
+      scrollPane.setBounds(25, 46, 355, 604);
       contentPane.add(scrollPane);
       scrollPane.setViewportView(table);
 
@@ -156,10 +159,12 @@ public class Main extends JFrame {
       contentPane.add(menuBar);
 
       JMenu file_menu = new JMenu("파일");
-      file_menu.setFont(new Font("맑은 고딕", Font.PLAIN, 21));
+      file_menu.setBackground(new Color(255, 255, 255));
+      file_menu.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       menuBar.add(file_menu);
 
       JMenuItem new_voca = new JMenuItem("새 단어장");
+      new_voca.setBackground(SystemColor.text);
       new_voca.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       new_voca.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent arg0) {
@@ -193,6 +198,7 @@ public class Main extends JFrame {
       file_menu.add(new_voca);
 
       JMenuItem view_myword = new JMenuItem("불러오기");
+      view_myword.setBackground(SystemColor.text);
       view_myword.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       view_myword.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
@@ -221,10 +227,12 @@ public class Main extends JFrame {
       file_menu.add(view_myword);
 
       JMenu odap_menu = new JMenu("오답노트");
-      odap_menu.setFont(new Font("맑은 고딕", Font.PLAIN, 21));
+      odap_menu.setBackground(new Color(255, 255, 255));
+      odap_menu.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       menuBar.add(odap_menu);
 
       JMenuItem new_odap = new JMenuItem("새 오답노트");
+      new_odap.setBackground(SystemColor.text);
       new_odap.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       new_odap.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent arg0) {
@@ -259,6 +267,7 @@ public class Main extends JFrame {
       odap_menu.add(new_odap);
 
       JMenuItem view_odap = new JMenuItem("불러오기");
+      view_odap.setBackground(SystemColor.text);
       view_odap.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       view_odap.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
@@ -287,6 +296,7 @@ public class Main extends JFrame {
       odap_menu.add(view_odap);
 
       JMenuItem suneung = new JMenuItem("수능");
+      suneung.setBackground(SystemColor.text);
       suneung.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       suneung.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent arg0) {
@@ -309,6 +319,7 @@ public class Main extends JFrame {
       menuBar.add(suneung);
 
       JMenuItem toeic = new JMenuItem("토익");
+      toeic.setBackground(SystemColor.text);
       toeic.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       toeic.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
@@ -331,6 +342,7 @@ public class Main extends JFrame {
       menuBar.add(toeic);
 
       JMenuItem tople = new JMenuItem("토플");
+      tople.setBackground(SystemColor.text);
       tople.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       tople.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent arg0) {
@@ -351,9 +363,20 @@ public class Main extends JFrame {
          }
       });
       menuBar.add(tople);
+      
+      JMenuItem menu_quit = new JMenuItem("종료");
+      menu_quit.setBackground(SystemColor.text);
+      menu_quit.addActionListener(new ActionListener() {
+      	public void actionPerformed(ActionEvent e) {
+      		System.exit(0);
+      	}
+      });
+      menu_quit.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+      menuBar.add(menu_quit);
 
       JPanel wordpanel = new JPanel();
-      wordpanel.setBackground(Color.WHITE);
+      wordpanel.setBorder(new LineBorder(new Color(192, 192, 192), 2, true));
+      wordpanel.setBackground(new Color(255, 252, 253));
       wordpanel.setBounds(399, 46, 353, 149);
       contentPane.add(wordpanel);
       wordpanel.setLayout(null);
@@ -369,7 +392,7 @@ public class Main extends JFrame {
       wordkor.setColumns(10);
 
       JButton addword = new JButton("추가");
-      addword.setBackground(SystemColor.control);
+      addword.setBackground(new Color(255, 255, 255));
       addword.setFont(new Font("맑은 고딕", Font.PLAIN, 21));
       addword.setBounds(250, 19, 91, 37);
       addword.addActionListener(new ActionListener() {
@@ -417,7 +440,7 @@ public class Main extends JFrame {
       wordpanel.add(addword);
 
       JButton delword = new JButton("삭제");
-      delword.setBackground(SystemColor.control);
+      delword.setBackground(new Color(255, 255, 255));
       delword.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
             int row = table.getSelectedRow();
@@ -455,165 +478,158 @@ public class Main extends JFrame {
       wordpanel.add(wordkorlabel);
 
       JPanel optionpanel = new JPanel();
-      optionpanel.setBackground(Color.WHITE);
+      optionpanel.setBorder(new LineBorder(new Color(192, 192, 192), 2, true));
+      optionpanel.setBackground(new Color(255, 252, 253));
       optionpanel.setBounds(398, 528, 354, 122);
       contentPane.add(optionpanel);
       optionpanel.setLayout(null);
       
-      JButton popupbutton = new JButton("미니 모드");
-      popupbutton.setBackground(SystemColor.control);
+      JButton popupbutton = new JButton("팝업 전환");
+      popupbutton.setBackground(new Color(255, 255, 255));
       popupbutton.addActionListener(new ActionListener() {
          @Override
          public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
-            if (e.getActionCommand().equals("미니 모드")) {
+            if (e.getActionCommand().equals("팝업 전환")) {
                minsize minsz = new minsize(tablename);
                minsz.setVisible(true);
                }
          }
       });
       
+      
       popupbutton.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-      popupbutton.setBounds(12, 18, 161, 86);
+      popupbutton.setBounds(190, 18, 152, 86);
       optionpanel.add(popupbutton);
       
-      JButton quitbutton = new JButton("종료");
-      quitbutton.setBackground(SystemColor.control);
-      quitbutton.addActionListener(new ActionListener() {
+      JButton btnNewButton = new JButton("테스트");
+      btnNewButton.setBounds(12, 18, 161, 86);
+      optionpanel.add(btnNewButton);
+      btnNewButton.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-            System.exit(0);
-         }
-      });
-      quitbutton.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-      quitbutton.setBounds(190, 18, 152, 86);
-      optionpanel.add(quitbutton);
+        	 ArrayList<String> testWords = new ArrayList<String>();
+             int failCount = 0;
+             int n = 0;
+                         
+             Random rand = new Random();
+             
+             conn = dbconnect.dbconn();
+             try {
+             	
+                ArrayList<String> englist = new ArrayList<>();
+                ArrayList<String> korlist = new ArrayList<>();
+                
+             sql = "select 영단어, 해석 from " + tablename;
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql);
+             
+             while(rs.next()) {
+                englist.add(rs.getString(1));
+                 korlist.add(rs.getString(2));               
+             }
+           
+             if(englist.size() >= 20)
+                size = 20;
+             else
+                size = englist.size();
+
+             ArrayList<String> pick = new ArrayList<>();
+             
+             for(int i = 0; i < size; i++) {
+                int cnt = 0;
+                point = 5;
+                
+                wordl.setText(englist.get(i));
+                selectindex = rand.nextInt(4);
+                 rad = new int[4];
+                 
+                 for(int x = 0; x < 4; x++) {
+                    rad[x] = rand.nextInt(englist.size());
+                    for (int y = 0; y < x; y++) {
+                       if(rad[y] == rad[x]) {
+                          x--;
+                          break;
+                       }
+                    }
+                 }
+                 
+                 for(n = 0; n<4; n++)
+                    if(rad[n] == i)
+                       cnt++;
+                 
+                 if(cnt == 0)
+                    rad[selectindex] = i;
+                 
+                 n = 0;
+                 rad1.setText(korlist.get(rad[n++]));
+                 rad2.setText(korlist.get(rad[n++]));
+                 rad3.setText(korlist.get(rad[n++]));
+                 rad4.setText(korlist.get(rad[n++]));
+
+                //JOptionPane.showInputDialog((i + 1) + "번째 단어 : '" + englist.get(i) + "'\n현재까지 총 틀린 횟수 : " + failCount, testpanel);
+                JOptionPane.showOptionDialog(null, testpane, "테스트", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if(point <5) {
+                   if (i==rad[point])
+                      pick.add( "정답인   "+ korlist.get(rad[point]));
+                   else 
+                      pick.add("오답인   " + korlist.get(rad[point]));
+                   if(i != rad[point])
+                      failCount++;
+                }
+                else
+                {
+                   pick.add("선택하지 않으셨습니다");
+                   failCount++;
+                }
+                nullrad.setSelected(true);
+
+             }
+             DecimalFormat form = new DecimalFormat("#.#");
+             if(englist.size() != 0)
+             {
+                testResultText.setText(form.format(100 * ((size - (double)failCount) / (double)englist.size())) + " 점");
+                testFailCountText.setText(failCount + " 개");
+             }
+             // 결과 메시지를 준비합니다.
+
+             
+             String resultMessage = "";
+             // 모든 결과 내용을 결과 메시지에 담습니다.
+             for(int i = 0; i < pick.size(); i++)
+             {
+                resultMessage += (i + 1) + "번째 시도 : 단어 '" + englist.get(i) + "'에 대하여 '" + pick.get(i) + "' 라고 답했습니다.\n";
+             }
+             resultMessage += "테스트 점수 : " + form.format(100 * ((size - (double)failCount) / (double)englist.size())) + " 점";
+             resultMessage += "\n틀린 개수 : " + failCount + " 개";
+             // 결과 메시지를 스크롤 팬에 담겨진 JOptionPane의 형태로 사용자에게 보여줍니다.
+             JTextArea textArea = new JTextArea(resultMessage);
+             JScrollPane scrollPane = new JScrollPane(textArea);  
+             textArea.setLineWrap(true);  
+             textArea.setWrapStyleWord(true); 
+             scrollPane.setPreferredSize(new Dimension(500, 500));
+             JOptionPane.showMessageDialog(null, scrollPane, "테스트 결과", JOptionPane.INFORMATION_MESSAGE);
+             }catch (Exception test) {
+                test.getMessage();
+             }
+          }
+       });
+      btnNewButton.setBackground(Color.WHITE);
+      btnNewButton.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       
       JPanel panel = new JPanel();
-      panel.setBackground(Color.WHITE);
+      panel.setBorder(new LineBorder(new Color(192, 192, 192), 2, true));
+      panel.setBackground(new Color(255, 252, 253));
       panel.setBounds(399, 213, 353, 277);
       contentPane.add(panel);
       panel.setLayout(null);
       
-      JButton btnNewButton = new JButton("테스트");
-      btnNewButton.addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e) {
-            ArrayList<String> testWords = new ArrayList<String>();
-            int failCount = 0;
-            int n = 0;
-                        
-            Random rand = new Random();
-            
-            conn = dbconnect.dbconn();
-            try {
-            	
-               ArrayList<String> englist = new ArrayList<>();
-               ArrayList<String> korlist = new ArrayList<>();
-               
-            sql = "select 영단어, 해석 from " + tablename;
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            
-            while(rs.next()) {
-               englist.add(rs.getString(1));
-                korlist.add(rs.getString(2));               
-            }
-          
-            if(englist.size() >= 20)
-               size = 20;
-            else
-               size = englist.size();
-
-            ArrayList<String> pick = new ArrayList<>();
-            
-            for(int i = 0; i < size; i++) {
-               int cnt = 0;
-               point = 5;
-               
-               wordl.setText(englist.get(i));
-               selectindex = rand.nextInt(4);
-                rad = new int[4];
-                
-                for(int x = 0; x < 4; x++) {
-                   rad[x] = rand.nextInt(englist.size());
-                   for (int y = 0; y < x; y++) {
-                      if(rad[y] == rad[x]) {
-                         x--;
-                         break;
-                      }
-                   }
-                }
-                
-                for(n = 0; n<4; n++)
-                   if(rad[n] == i)
-                      cnt++;
-                
-                if(cnt == 0)
-                   rad[selectindex] = i;
-                
-                n = 0;
-                rad1.setText(korlist.get(rad[n++]));
-                rad2.setText(korlist.get(rad[n++]));
-                rad3.setText(korlist.get(rad[n++]));
-                rad4.setText(korlist.get(rad[n++]));
-
-               //JOptionPane.showInputDialog((i + 1) + "번째 단어 : '" + englist.get(i) + "'\n현재까지 총 틀린 횟수 : " + failCount, testpanel);
-               JOptionPane.showOptionDialog(null, testpane, "테스트", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-               if(point <5) {
-                  if (i==rad[point])
-                     pick.add( "정답인   "+ korlist.get(rad[point]));
-                  else 
-                     pick.add("오답인   " + korlist.get(rad[point]));
-                  if(i != rad[point])
-                     failCount++;
-               }
-               else
-               {
-                  pick.add("선택하지 않으셨습니다");
-                  failCount++;
-               }
-               nullrad.setSelected(true);
-
-            }
-            DecimalFormat form = new DecimalFormat("#.#");
-            if(englist.size() != 0)
-            {
-               testResultText.setText(form.format(100 * (((double)englist.size() - (double)failCount) / (double)englist.size())) + " 점");
-               testFailCountText.setText(failCount + " 개");
-            }
-            // 결과 메시지를 준비합니다.
-
-            String resultMessage = "";
-            // 모든 결과 내용을 결과 메시지에 담습니다.
-            for(int i = 0; i < pick.size(); i++)
-            {
-               resultMessage += (i + 1) + "번째 시도 : 단어 '" + englist.get(i) + "'에 대하여 '" + pick.get(i) + "' 라고 답했습니다.\n";
-            }
-            resultMessage += "테스트 점수 : " + form.format(100 * ((size - (double)failCount) / (double)englist.size())) + " 점";
-            resultMessage += "\n틀린 개수 : " + failCount + " 개";
-            // 결과 메시지를 스크롤 팬에 담겨진 JOptionPane의 형태로 사용자에게 보여줍니다.
-            JTextArea textArea = new JTextArea(resultMessage);
-            JScrollPane scrollPane = new JScrollPane(textArea);  
-            textArea.setLineWrap(true);  
-            textArea.setWrapStyleWord(true); 
-            scrollPane.setPreferredSize(new Dimension(500, 500));
-            JOptionPane.showMessageDialog(null, scrollPane, "테스트 결과", JOptionPane.INFORMATION_MESSAGE);
-            }catch (Exception test) {
-               test.getMessage();
-            }
-         }
-      });
-      btnNewButton.setBounds(217, 191, 117, 68);
-      panel.add(btnNewButton);
-      btnNewButton.setBackground(SystemColor.control);
-      btnNewButton.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-      
       JLabel TotalCountLabel = new JLabel("총 단어수");
-      TotalCountLabel.setBounds(29, 30, 102, 25);
-      TotalCountLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+      TotalCountLabel.setBounds(19, 44, 102, 25);
+      TotalCountLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
       panel.add(TotalCountLabel);
       
       TotalCount = new JTextField();
-      TotalCount.setBounds(143, 27, 163, 36);
+      TotalCount.setBounds(143, 40, 191, 36);
       panel.add(TotalCount);
       TotalCount.setColumns(10);
       TotalCount.setBackground(Color.WHITE);
@@ -622,9 +638,8 @@ public class Main extends JFrame {
       TotalCount.setEditable(false);
       
       JLabel testResultLabel = new JLabel("최근 점수");
-      testResultLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-      
-      testResultLabel.setBounds(29, 84, 119, 33);
+      testResultLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+      testResultLabel.setBounds(19, 118, 119, 33);
       panel.add(testResultLabel);
       
       testResultText = new JTextField();
@@ -633,12 +648,12 @@ public class Main extends JFrame {
       testResultText.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
       testResultText.setEditable(false);
       testResultText.setColumns(10);
-      testResultText.setBounds(143, 83, 163, 36);
+      testResultText.setBounds(143, 118, 191, 36);
       panel.add(testResultText);
       
       JLabel testFailCountLabel = new JLabel("최근 틀린 개수");
-      testFailCountLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-      testFailCountLabel.setBounds(29, 138, 119, 33);
+      testFailCountLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+      testFailCountLabel.setBounds(19, 204, 129, 33);
       panel.add(testFailCountLabel);
       
       testFailCountText = new JTextField();
@@ -648,7 +663,7 @@ public class Main extends JFrame {
       testFailCountText.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
       testFailCountText.setEditable(false);
       testFailCountText.setColumns(10);
-      testFailCountText.setBounds(143, 137, 163, 36);
+      testFailCountText.setBounds(143, 204, 191, 36);
       panel.add(testFailCountText);
    }
 }
