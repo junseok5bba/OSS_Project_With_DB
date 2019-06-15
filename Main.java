@@ -539,10 +539,6 @@ public class Main extends JFrame {
 		optionpanel.add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-				model.setNumRows(0);
-
-
 				ArrayList<String> testWords = new ArrayList<String>();
 				int failCount = 0; // 틀린개수
 				int n = 0; // 라디오 버튼 별로 값을 넣기 위한 변수
@@ -551,117 +547,125 @@ public class Main extends JFrame {
 
 				conn = dbconnect.dbconn(); // DB연결
 				try {
-					ArrayList<String> englist = new ArrayList<>(); //DB의 영단어 리스트
-					ArrayList<String> korlist = new ArrayList<>(); //DB의 해석 리스트
+					ArrayList<String> englist = new ArrayList<>(); // DB의 영단어 리스트
+					ArrayList<String> korlist = new ArrayList<>(); // DB의 해석 리스트
 
-					
 					sql = "select 영단어, 해석 from " + tablename;
 					Statement st = conn.createStatement();
 					ResultSet rs = st.executeQuery(sql);
 
-					while (rs.next()) { //sql문의 결과에서 다음행이 있을 때마다
-						englist.add(rs.getString(1)); //영단어를 영단어리스트에 저장 
-						korlist.add(rs.getString(2)); //해석을 해석리스트에 저장
+					while (rs.next()) { // sql문의 결과에서 다음행이 있을 때마다
+						englist.add(rs.getString(1)); // 영단어를 영단어리스트에 저장
+						korlist.add(rs.getString(2)); // 해석을 해석리스트에 저장
 					}
+					if (englist.size() < 4) {
+						JOptionPane.showMessageDialog(null, "단어를 최소 4개를 추가해주세요\n", "단어의 개수가 부족",
+								JOptionPane.ERROR_MESSAGE);
+					} else {
 
-					if (englist.size() >= 20) // 테스트 버튼을 눌렀을 때 선택된 테이블의 단어의 개수가 20개 이상일떄
-						size = 20;
-					else // 20개 미만일 떄
-						size = englist.size();
+						DefaultTableModel model = (DefaultTableModel)table.getModel();
+						model.setNumRows(0);
+						
+						if (englist.size() >= 20) // 테스트 버튼을 눌렀을 때 선택된 테이블의 단어의 개수가 20개 이상일떄
+							size = 20;
+						else // 20개 미만일 떄
+							size = englist.size();
 
-					ArrayList<String> pick = new ArrayList<>(); //선택한 답을 저장하는 리스트
-					testword = new int[size]; // 
+						ArrayList<String> pick = new ArrayList<>(); // 선택한 답을 저장하는 리스트
+						testword = new int[size]; //
 
-					//시험볼 단어의 영단어를 랜덤하게 저장
-					for (int x = 0; x < size; x++) { 
-						testword[x] = rand.nextInt(englist.size());
-						for (int y = 0; y < x; y++) {
-							if (testword[y] == testword[x]) {
-								x--;
-							}
-						}
-					}
-
-					//시험볼 단어의 개수 만큼 반복
-					for (int i = 0; i < size; i++) {
-						int cnt = 0; //
-						point = 5; //선택한 값 초기화 ( 5일 시 선택하지않은 것으로 간주 )
-					
-						selectindex = rand.nextInt(4); //0~3까지 랜덤하게 갑 지정 (몇번 라디오 버튼인지 )
-						rad = new int[4];
-
-						//rad배열에 해석의 인덱스값을 랜덤하게 저장
-						for (int x = 0; x < 4; x++) {
-							rad[x] = rand.nextInt(englist.size());
+						// 시험볼 단어의 영단어를 랜덤하게 저장
+						for (int x = 0; x < size; x++) {
+							testword[x] = rand.nextInt(englist.size());
 							for (int y = 0; y < x; y++) {
-								if (rad[y] == rad[x]) {
+								if (testword[y] == testword[x]) {
 									x--;
 								}
 							}
 						}
-						
-						//라디오버튼1~4에 해당 영단어와 매칭되는 단어가 있는지 없는지 판별하기 위함
-						for (n = 0; n < 4; n++)
-							if (rad[n] == testword[i])
-								cnt++;
 
-						//매칭되는 단어가 없으면 랜덤한 라디오버튼에 매칭되는 해석을 저장
-						if (cnt == 0)
-							rad[selectindex] = testword[i];
+						// 시험볼 단어의 개수 만큼 반복
+						for (int i = 0; i < size; i++) {
+							int cnt = 0; //
+							point = 5; // 선택한 값 초기화 ( 5일 시 선택하지않은 것으로 간주 )
 
-						n = 0;
-						wordl.setText(englist.get(testword[i]));
-						testWords.add(englist.get(testword[i]));
-						rad1.setText(korlist.get(rad[n++]));
-						rad2.setText(korlist.get(rad[n++]));
-						rad3.setText(korlist.get(rad[n++]));
-						rad4.setText(korlist.get(rad[n++]));
+							selectindex = rand.nextInt(4); // 0~3까지 랜덤하게 갑 지정 (몇번 라디오 버튼인지 )
+							rad = new int[4];
 
-						JOptionPane.showOptionDialog(null, testpane, "테스트", JOptionPane.DEFAULT_OPTION,
-								JOptionPane.QUESTION_MESSAGE, null, null, null);
-						if (point < 4) {
-							if (testword[i] == rad[point])
-								pick.add("정답인   " + korlist.get(rad[point]));
-							else
-								pick.add("오답인   " + korlist.get(rad[point]));
-							if (testword[i] != rad[point])
+							// rad배열에 해석의 인덱스값을 랜덤하게 저장
+							for (int x = 0; x < 4; x++) {
+								rad[x] = rand.nextInt(englist.size());
+								for (int y = 0; y < x; y++) {
+									if (rad[y] == rad[x]) {
+										x--;
+									}
+								}
+							}
+
+							// 라디오버튼1~4에 해당 영단어와 매칭되는 단어가 있는지 없는지 판별하기 위함
+							for (n = 0; n < 4; n++)
+								if (rad[n] == testword[i])
+									cnt++;
+
+							// 매칭되는 단어가 없으면 랜덤한 라디오버튼에 매칭되는 해석을 저장
+							if (cnt == 0)
+								rad[selectindex] = testword[i];
+
+							n = 0;
+							wordl.setText(englist.get(testword[i]));
+							testWords.add(englist.get(testword[i]));
+							rad1.setText(korlist.get(rad[n++]));
+							rad2.setText(korlist.get(rad[n++]));
+							rad3.setText(korlist.get(rad[n++]));
+							rad4.setText(korlist.get(rad[n++]));
+
+							JOptionPane.showOptionDialog(null, testpane, "테스트", JOptionPane.DEFAULT_OPTION,
+									JOptionPane.QUESTION_MESSAGE, null, null, null);
+							if (point < 4) {
+								if (testword[i] == rad[point])
+									pick.add("정답인   " + korlist.get(rad[point]));
+								else
+									pick.add("오답인   " + korlist.get(rad[point]));
+								if (testword[i] != rad[point])
+									failCount++;
+							} else {
+								pick.add("선택하지 않으셨습니다");
 								failCount++;
-						} else {
-							pick.add("선택하지 않으셨습니다");
-							failCount++;
+							}
+							nullrad.setSelected(true); // 이전에 선태한 라디오버튼이 선택되지않도록 하기 위함
+
 						}
-						nullrad.setSelected(true); //이전에 선태한 라디오버튼이 선택되지않도록 하기 위함
+						DecimalFormat form = new DecimalFormat("#.#");
+						if (englist.size() != 0) {
+							testResultText
+									.setText(form.format(100 * ((size - (double) failCount) / (double) size)) + " 점");
+							testFailCountText.setText(failCount + " 개");
+						}
+						// 결과 메시지를 준비합니다.
 
-					}
-					DecimalFormat form = new DecimalFormat("#.#");
-					if (englist.size() != 0) {
-						testResultText.setText(form.format(100 * ((size - (double) failCount) / (double) size)) + " 점");
-						testFailCountText.setText(failCount + " 개");
-					}
-					// 결과 메시지를 준비합니다.
+						String resultMessage = "";
+						// 모든 결과 내용을 결과 메시지에 담습니다.
+						for (int i = 0; i < pick.size(); i++) {
+							resultMessage += (i + 1) + "번째 시도 : 단어 '" + testWords.get(i) + "'에 대하여 '" + pick.get(i)
+									+ "' 라고 답했습니다.\n";
+						}
+						resultMessage += "테스트 점수 : " + form.format(100 * ((size - (double) failCount) / (double) size))
+								+ " 점";
+						resultMessage += "\n틀린 개수 : " + failCount + " 개";
+						// 결과 메시지를 스크롤 팬에 담겨진 JOptionPane의 형태로 사용자에게 보여줍니다.
+						JTextArea textArea = new JTextArea(resultMessage);
+						JScrollPane scrollPane = new JScrollPane(textArea);
+						textArea.setLineWrap(true);
+						textArea.setWrapStyleWord(true);
+						scrollPane.setPreferredSize(new Dimension(500, 500));
 
-					String resultMessage = "";
-					// 모든 결과 내용을 결과 메시지에 담습니다.
-					for (int i = 0; i < pick.size(); i++) {
-						resultMessage += (i + 1) + "번째 시도 : 단어 '" + testWords.get(i) + "'에 대하여 '" + pick.get(i)
-								+ "' 라고 답했습니다.\n";
+						String sql = "select 영단어, 해석 from " + tablename;
+						st = conn.createStatement();
+						rs = st.executeQuery(sql);
+						table.setModel(DbUtils.resultSetToTableModel(rs));
+
+						JOptionPane.showMessageDialog(null, scrollPane, "테스트 결과", JOptionPane.INFORMATION_MESSAGE);
 					}
-					resultMessage += "테스트 점수 : " + form.format(100 * ((size - (double) failCount) / (double) size))
-							+ " 점";
-					resultMessage += "\n틀린 개수 : " + failCount + " 개";
-					// 결과 메시지를 스크롤 팬에 담겨진 JOptionPane의 형태로 사용자에게 보여줍니다.
-					JTextArea textArea = new JTextArea(resultMessage);
-					JScrollPane scrollPane = new JScrollPane(textArea);
-					textArea.setLineWrap(true);
-					textArea.setWrapStyleWord(true);
-					scrollPane.setPreferredSize(new Dimension(500, 500));
-					
-					String sql = "select 영단어, 해석 from " + tablename;
-					st = conn.createStatement();
-					rs = st.executeQuery(sql);
-					table.setModel(DbUtils.resultSetToTableModel(rs));
-					
-					JOptionPane.showMessageDialog(null, scrollPane, "테스트 결과", JOptionPane.INFORMATION_MESSAGE);
 				} catch (Exception test) {
 					test.getMessage();
 				}
